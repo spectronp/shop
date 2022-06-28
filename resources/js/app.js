@@ -1,5 +1,5 @@
 require('./bootstrap');
-
+/*
 import { createRoot } from 'react-dom/client';
 import SearchBar from './react/SearchBar';
 
@@ -11,3 +11,4 @@ function handleValueChange(e) {
 }
 
 root.render(<SearchBar value={""} />);
+*/

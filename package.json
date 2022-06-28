@@ -1,6 +1,9 @@
 {
     "private": true,
     "scripts": {
+        "cypress:open": "php artisan serve --env=cypress & cypress open",
+        "cypress:run": "php artisan serve --env=cypress $ cypress run",
+
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",
