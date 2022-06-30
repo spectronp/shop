@@ -1,7 +1,7 @@
-import ControlPanel from "./ControlPanel";
+import ControlTab from "./ControlTab";
 
-export default function MIddleSection(props){
+export default function MiddleSection(props){
     return (
-        <ControlPanel />
+        <ControlTab />
     )
 }

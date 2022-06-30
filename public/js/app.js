@@ -2208,23 +2208,44 @@ function ClientsPage(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/ControlPanel.jsx":
-/*!**************************************************!*\
-  !*** ./resources/js/components/ControlPanel.jsx ***!
-  \**************************************************/
+/***/ "./resources/js/components/ControlButton.jsx":
+/*!***************************************************!*\
+  !*** ./resources/js/components/ControlButton.jsx ***!
+  \***************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ ControlPanel)
+/* harmony export */   "default": () => (/* binding */ ControlButton)
 /* harmony export */ });
-/* harmony import */ var _PanelButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PanelButton */ "./resources/js/components/PanelButton.jsx");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+function ControlButton(props) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", {
+    id: "add-form-toggle"
+  });
+}
+
+/***/ }),
+
+/***/ "./resources/js/components/ControlTab.jsx":
+/*!************************************************!*\
+  !*** ./resources/js/components/ControlTab.jsx ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ControlTab)
+/* harmony export */ });
+/* harmony import */ var _ControlButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ControlButton */ "./resources/js/components/ControlButton.jsx");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
-function ControlPanel(props) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_PanelButton__WEBPACK_IMPORTED_MODULE_0__["default"], {
+function ControlTab(props) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_ControlButton__WEBPACK_IMPORTED_MODULE_0__["default"], {
     elementId: "add-form"
   });
 }
@@ -2240,35 +2261,14 @@ function ControlPanel(props) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MIddleSection)
+/* harmony export */   "default": () => (/* binding */ MiddleSection)
 /* harmony export */ });
-/* harmony import */ var _ControlPanel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ControlPanel */ "./resources/js/components/ControlPanel.jsx");
+/* harmony import */ var _ControlTab__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ControlTab */ "./resources/js/components/ControlTab.jsx");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
-function MIddleSection(props) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_ControlPanel__WEBPACK_IMPORTED_MODULE_0__["default"], {});
-}
-
-/***/ }),
-
-/***/ "./resources/js/components/PanelButton.jsx":
-/*!*************************************************!*\
-  !*** ./resources/js/components/PanelButton.jsx ***!
-  \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ PanelButton)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-
-function PanelButton(props) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", {
-    id: "add-form-toggle"
-  });
+function MiddleSection(props) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_ControlTab__WEBPACK_IMPORTED_MODULE_0__["default"], {});
 }
 
 /***/ }),
