@@ -1,5 +1,5 @@
 import React from 'react'
-import { screen, render } from '@testing-library/react'
+import { screen, render, act } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
 import MiddleSector from '../../resources/js/components/MiddleSector'
@@ -19,12 +19,12 @@ describe('MiddleSector', () => {
             if(activePanel === expectedPanel){
                 return {
                     pass: true,
-                    message: () => `expected to receive ${expectedPanel} as props, insted of ${activePanel}`
+                    message: () => `expected to not receive ${expectedPanel} as activePanel`
                 }
             } else{
                 return {
                     pass: false,
-                    message: () => `expected to not receive ${expectedPanel} as props`
+                    message: () => `expected to receive ${expectedPanel} as activePanel, instead of ${activePanel}`
                 }
             }
         }
@@ -35,7 +35,11 @@ describe('MiddleSector', () => {
         jest.clearAllMocks()
 
         render(<MiddleSector />)
-        setActivePanel = ControlTab.mock.lastCall[0]['setActivePanel']
+        setActivePanel = () => {
+            act(() => {
+                ControlTab.mock.lastCall[0]['setActivePanel']
+            })
+        }
     })
 
     // Tests
