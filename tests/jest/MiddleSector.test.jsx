@@ -35,9 +35,9 @@ describe('MiddleSector', () => {
         jest.clearAllMocks()
 
         render(<MiddleSector />)
-        setActivePanel = () => {
+        setActivePanel = (panel) => {
             act(() => {
-                ControlTab.mock.lastCall[0]['setActivePanel']
+                ControlTab.mock.lastCall[0]['setActivePanel'](panel)
             })
         }
     })
