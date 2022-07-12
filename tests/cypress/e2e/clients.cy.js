@@ -1,15 +1,5 @@
 describe('Clients Page', () => {
 
-    // TODO -- Replace this function by one from Testing Library
-    const getByLabel = (label) => {
-        return cy
-            .contains('label', label)
-            .invoke('attr', 'for')
-            .then((id) => {
-                cy.get('#' + id)
-            })
-    }
-
     it('Clients CRUD', () => {
 
     const client_data = {
@@ -29,31 +19,31 @@ describe('Clients Page', () => {
     // Opens and close the add form
     // NOTE -- Assert the input is not visible before?
     cy.get('button#add-form-toggle').as('addFormToggle').click()
-    getByLabel('Nome').should('be.visible')
+    cy.findByLabelText('Nome').should('be.visible')
     cy.get('@addFormToggle').click()
-    getByLabel('Nome').should('not.be.visible')
+    cy.findByLabelText('Nome').should('not.exist')
 
     // Opens the add form and type the client name, about and click the submit button
     cy.get('@addFormToggle').click()
-    getByLabel('Nome').type(client_data.name)
-    getByLabel('Sobre').type(client_data.about)
-    getByLabel('Cadastrar').click() // NOTE -- Maybe it could be an loading feedback after this click
+    cy.findByLabelText('Nome').type(client_data.name)
+    cy.findByLabelText('Sobre').type(client_data.about)
+    cy.findByLabelText('Cadastrar').click() // NOTE -- Maybe it could be an loading feedback after this click
 
     // Add form inputs should be empty after an successful request
-    getByLabel('Nome').should('be.empty')
-    getByLabel('Sobre').should('be.empty')
+    cy.findByLabelText('Nome').should('be.empty')
+    cy.findByLabelText('Sobre').should('be.empty')
 
     // Check for the successful request feedback
     cy.contains('Cliente cadastrada(o)')
 
     // Request feedback should disappear after typing somethin in the form again
-    getByLabel('Nome').type('a')
+    cy.findByLabelText('Nome').type('a')
     cy.contains('Cliente cadastrada(o)').should('not.exist')
 
     // Closes the add form and check if the form inputs have been reset
     cy.get('addFormToggle').click()
-    getByLabel('Nome').should('be.empty')
-    getByLabel('Sobre').should('be.empty')
+    cy.findByLabelText('Nome').should('be.empty')
+    cy.findByLabelText('Sobre').should('be.empty')
 
     // Check if the new added client is in the more recent section
     cy.contains('Mais recentes').parents('#more-recent-wrapper')
@@ -68,7 +58,7 @@ describe('Clients Page', () => {
         // Expand card, create history and type one line
         cy.get('.expand-toggle').as('expand').click() // NOTE -- Maybe this expand action should cover the whole client card
         cy.get('.client-history').as('history').should('not.be.visible')
-        getByLabel('Adicionar Histórico').click().should('not.exist')
+        cy.findByLabelText('Adicionar Histórico').click().should('not.exist')
         cy.get('history').type(history_line)
         cy.contains('Salvando...')
         cy.contains('Salvo')
@@ -84,21 +74,21 @@ describe('Clients Page', () => {
         // Click edit button,
         cy.get('.edit-button').as('edit').click()
         cy.get('input').should('have.value', edited_client_data.name)
-        getByLabel('Cancelar').click()
+        cy.findByLabelText('Cancelar').click()
 
         // Click the edit button, check if the client data is present in the input, change the data and click 'Edit'
         cy.get('.edit-button').as('edit').click() // TODO -- Remove this as() and get the button with @edit
-        getByLabel('Name')
+        cy.findByLabelText('Name')
             .should('have.value', client_data.name)
             .clear()
             .type(edited_client_data.name)
 
-        getByLabel('Sobre')
+        cy.findByLabelText('Sobre')
             .should('have.value', client_data.about)
             .clear()
             .type(edited_client_data.about)
 
-        getByLabel('Editar').click()
+        cy.findByLabelText('Editar').click()
         cy.get('input').should('not.be.visible')
 
         // Check if the card has the edited data
@@ -111,13 +101,13 @@ describe('Clients Page', () => {
         cy.contains('Tem certeza?')
         cy.contains('A(o) cliente deletado sera enviada(o) para a lixeira e deletado permanentemente depois de 30 dias')
         cy.contains('E possivel deletar permanentemente de forma manual na lixeira')
-        getByLabel('Cancelar').click()
+        cy.findByLabelText('Cancelar').click()
         cy.contains(edited_client_data.name)
         cy.contains(edited_client_data.about)
 
         // Do the same thing, but click 'Yes' at the end to delete the client, and assert the cient is not there anymore
         cy.get('@delete').click()
-        getByLabel('Sim, deletar cliente').click()
+        cy.findByLabelText('Sim, deletar cliente').click()
         cy.get('@addedClient').should('not.exist')
     })
   })
@@ -130,7 +120,7 @@ describe('Clients Page', () => {
 
       cy.visit('/')
 
-      getByLabel('Buscar').as('search').type(client)
+      cy.findByLabelText('Buscar').as('search').type(client)
       cy.get('#search-load').should('be.visible')
       cy.get('#results').within(() => { // NOTE - Maybe the #results and #results-list could be the same
         cy.get('ol#results-list').as('list').should('have.length', 10) // NOTE -- This length will be configurable in the future
