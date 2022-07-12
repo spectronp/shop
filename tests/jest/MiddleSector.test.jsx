@@ -32,8 +32,6 @@ describe('MiddleSector', () => {
 
     let setActivePanel
     beforeEach(() => {
-        jest.clearAllMocks()
-
         render(<MiddleSector />)
         setActivePanel = (panel) => {
             act(() => {
