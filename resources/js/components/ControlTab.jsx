@@ -1,7 +1,8 @@
+import Panel from "../assets/Panel"
 import ControlButton from "./ControlButton"
 
-export default function ControlTab(props){
+export default function ControlTab({ setActivePanel }){
     return (
-        <ControlButton elementId='add-form' />
+        <ControlButton panel={Panel.ADD_FORM} setActivePanel={setActivePanel} />
     )
 }

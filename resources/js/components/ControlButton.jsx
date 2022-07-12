@@ -1,6 +1,7 @@
 
-export default function ControlButton(props){
+export default function ControlButton({ panel, setActivePanel }){
+
     return (
-        <button id='add-form-toggle'></button>
+        <button id='add-form-toggle' onClick={() => setActivePanel(panel)}></button>
     )
 }

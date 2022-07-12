@@ -1,5 +1,5 @@
 
-export default PanelReducer = (activePanel, clickedPanel) => {
+export default function PanelReducer (activePanel, clickedPanel) {
 
     if(activePanel === clickedPanel){
         return null
