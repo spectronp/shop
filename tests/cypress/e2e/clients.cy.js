@@ -27,16 +27,16 @@ describe('Clients Page', () => {
     cy.get('@addFormToggle').click()
     cy.findByLabelText('Nome').type(client_data.name)
     cy.findByLabelText('Sobre').type(client_data.about)
-    cy.findByLabelText('Cadastrar').click() // NOTE -- Maybe it could be an loading feedback after this click
+    cy.findByText('Cadastrar').click() // NOTE -- Maybe it could be an loading feedback after this click
+
+    // Check for the successful request feedback
+    cy.contains('Cliente cadastrada(o)')
 
     // Add form inputs should be empty after an successful request
     cy.findByLabelText('Nome').should('be.empty')
     cy.findByLabelText('Sobre').should('be.empty')
 
-    // Check for the successful request feedback
-    cy.contains('Cliente cadastrada(o)')
-
-    // Request feedback should disappear after typing somethin in the form again
+    // Request feedback should disappear after typing something in the form again
     cy.findByLabelText('Nome').type('a')
     cy.contains('Cliente cadastrada(o)').should('not.exist')
 
