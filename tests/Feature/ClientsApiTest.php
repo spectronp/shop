@@ -12,16 +12,19 @@ class ClientsApiTest extends TestCase
 
     public function testCanAddClient(): void
     {
+        $client = [
+            "name" => "John Doe",
+            "about" => "really cool guy"
+        ];
+
         $response = $this->postJson('/clients', [
-            "client" => [
-                "name" => "John Doe",
-                "about" => "really cool guy"
-            ]
+            "client" => $client
         ]);
 
         $response->assertStatus(201)->assertJson( fn (AssertableJson $json) =>
             $json->whereType('id', 'integer')
         );
+        $this->assertDatabaseHas('clients', $client );
     }
 
     public function testNoClientKey(): void
