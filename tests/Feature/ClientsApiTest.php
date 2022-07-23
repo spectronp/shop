@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
+use App\Models\Client;
 
 class ClientsApiTest extends TestCase
 {
@@ -17,7 +18,7 @@ class ClientsApiTest extends TestCase
             "about" => "really cool guy"
         ];
 
-        $response = $this->postJson('/clients', [
+        $response = $this->postJson('/api/clients', [
             "client" => $client
         ]);
 
@@ -29,7 +30,7 @@ class ClientsApiTest extends TestCase
 
     public function testNoClientKey(): void
     {
-        $response = $this->postJson('/clients');
+        $response = $this->postJson('/api/clients');
 
         $response->assertStatus(400)->assertJson([
             "error" => "The request body should have a json object with a client field"
@@ -38,10 +39,26 @@ class ClientsApiTest extends TestCase
 
     public function testNoNameKey(): void
     {
-        $response = $this->postJson('/clients', [ "client" => [] ]);
+        $response = $this->postJson('/api/clients', [ "client" => [] ]);
 
         $response->assertStatus(400)->assertJson([
             "error" => "The client object should have at least a name field"
+        ]);
+    }
+
+    public function testClientCanNotBeDuplicate(): void
+    {
+        $client = [
+            'name' => 'John Duo',
+            'about' => 'has a twin'
+        ];
+
+        Client::create($client);
+
+        $response = $this->postJson('/api/clients', ['client' => $client]);
+
+        $response->assertStatus(409)->assertJson([
+            "error" => "Other client with the same description already exists" // NOTE -- change this message ???
         ]);
     }
 }
