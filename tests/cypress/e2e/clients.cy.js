@@ -1,6 +1,5 @@
 describe('Clients Page', () => {
 
-
     beforeEach(() => {
         cy.refreshDatabase()
     })
@@ -46,7 +45,7 @@ describe('Clients Page', () => {
         cy.contains('Cliente cadastrada(o)').should('not.exist')
 
         // Closes the add form and check if the form inputs have been reset
-        cy.get('addFormToggle').click()
+        cy.get('@addFormToggle').click()
         cy.findByLabelText('Nome').should('be.empty')
         cy.findByLabelText('Sobre').should('be.empty')
 
