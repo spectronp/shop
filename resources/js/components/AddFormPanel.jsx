@@ -4,31 +4,40 @@ import ApiStatus from "../assets/ApiStatus"
 
 export default function AddFormPanel() {
 
-    const nameRef = useRef(null)
-    const aboutRef = useRef(null)
+    const [name, setname] = useState('')
+    const [about, setAbout] = useState('')
 
     const [status, setStatus] = useState( ApiStatus.IDLE )
     const [error, setError] = useState(null)
 
     const handleSubmit = e => {
-
         e.preventDefault()
-
-        let name = nameRef.current.value
-        let about = aboutRef.current.value
 
         api.addClient(name, about)
         .then((response) => {
-            console.log('then')
+            setname('')
+            setAbout('')
             setStatus(ApiStatus.SUCCESS)
         })
         .catch(() => {
-            console.log('catch')
             setStatus(ApiStatus.ERROR)
             setError('Erro')
         })
 
         setStatus(ApiStatus.WAITING)
+    }
+
+    const handleChange = e => {
+        setStatus(ApiStatus.IDLE)
+
+        switch(e.target.attributes.id.value){
+            case 'name':
+                setname(e.target.value)
+                break
+            case 'about':
+                setAbout(e.target.value)
+                break
+        }
     }
 
     const feedback = () => {
@@ -47,10 +56,10 @@ export default function AddFormPanel() {
     return (
         <>
         <form onSubmit={ handleSubmit } >
-            <input type="text" name="" id="name" ref={ nameRef } />
+            <input type="text" name="" id="name" value={name} onChange={handleChange} />
             <label htmlFor="name">Nome</label>
 
-            <input type="text" name="" id="about" ref={ aboutRef } />
+            <input type="text" name="" id="about" value={about} onChange={handleChange} />
             <label htmlFor="about">Sobre</label>
 
             <button type="submit" id="register">Cadastrar</button>
