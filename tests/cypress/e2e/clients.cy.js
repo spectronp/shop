@@ -52,7 +52,7 @@ describe('Clients Page', () => {
         cy.findByLabelText('Sobre').should('have.value', '')
 
         // Check if the new added client is in the more recent section
-        cy.contains('Mais recentes').parents('#more-recent-wrapper')
+        cy.contains('Mais recentes').parents('#most-relevant-wrapper')
         .within(() => {
             cy.contains(client_data.name).parents('.client-card').as('addedClient')
             cy.contains(client_data.about)
