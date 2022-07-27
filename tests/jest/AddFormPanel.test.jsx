@@ -11,7 +11,7 @@ jest.mock('../../resources/js/assets/api', () => {
     }
 })
 
-test.only('no feedback by dafault', () => {
+test('no feedback by dafault', () => {
     const feedbackMessages = ['Carregando...', 'Cliente cadastrada(o)', 'Erro']
     render(<AddFormPanel />)
 
@@ -48,4 +48,15 @@ test('error feedback', async () => {
     await user.click(screen.queryByText('Cadastrar'))
 
     expect(screen.queryByText('Erro')).toBeInTheDocument()
+})
+
+test('wipe feedback when user type again', async () => {
+    api.addClient.mockResolvedValueOnce({})
+    const user = userEvent.setup()
+    render(<AddFormPanel />)
+
+    await user.click(screen.queryByText('Cadastrar'))
+    await user.type(screen.queryByText('Nome'), 'aaa')
+
+    expect(screen.queryByText('Cliente cadastrada(o)')).not.toBeInTheDocument()
 })
