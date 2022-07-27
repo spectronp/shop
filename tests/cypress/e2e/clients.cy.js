@@ -44,10 +44,12 @@ describe('Clients Page', () => {
         cy.findByLabelText('Nome').type('a')
         cy.contains('Cliente cadastrada(o)').should('not.exist')
 
-        // Closes the add form and check if the form inputs have been reset
+        // Close, open the form and check if the inputs have been reset
+        // TODO -- do this depending on the the time the form is kept closed
         cy.get('@addFormToggle').click()
-        cy.findByLabelText('Nome').should('be.empty')
-        cy.findByLabelText('Sobre').should('be.empty')
+        cy.get('@addFormToggle').click()
+        cy.findByLabelText('Nome').should('have.value', '')
+        cy.findByLabelText('Sobre').should('have.value', '')
 
         // Check if the new added client is in the more recent section
         cy.contains('Mais recentes').parents('#more-recent-wrapper')
