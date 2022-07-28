@@ -25,7 +25,6 @@ const api = {
 
         } catch (error) {
             // TODO -- error handling
-            console.log('api catch')
 
             if(error.response){
                 console.log(error.response)
@@ -38,9 +37,7 @@ const api = {
             throw error
         }
 
-        // TODO -- manage what should be returned
-
-        return response
+        return response.data
     }
 }
 
