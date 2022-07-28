@@ -1,4 +1,3 @@
-import React from 'react'
 import { screen, render, act } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
@@ -10,78 +9,104 @@ jest.mock("../../resources/js/components/ControlTab", () => jest.fn(({ setActive
 
 jest.mock("../../resources/js/components/PanelController", () => jest.fn(({ activePanel }) => <div data-testid="PanelController"></div> ))
 
-describe('MiddleSector', () => {
+expect.extend({
+    toHaveActivePanel(received, expectedPanel){
+        let activePanel = received.mock.lastCall[0]['activePanel']
 
-    expect.extend({
-        toHaveActivePanel(received, expectedPanel){
-            let activePanel = received.mock.lastCall[0]['activePanel']
-
-            if(activePanel === expectedPanel){
-                return {
-                    pass: true,
-                    message: () => `expected to not receive ${expectedPanel} as activePanel`
-                }
-            } else{
-                return {
-                    pass: false,
-                    message: () => `expected to receive ${expectedPanel} as activePanel, instead of ${activePanel}`
-                }
+        if(activePanel === expectedPanel){
+            return {
+                pass: true,
+                message: () => `expected to not receive ${expectedPanel} as activePanel`
+            }
+        } else{
+            return {
+                pass: false,
+                message: () => `expected to receive ${expectedPanel} as activePanel, instead of ${activePanel}`
             }
         }
-    })
+    }
+})
 
-    let setActivePanel
-    beforeEach(() => {
-        render(<MiddleSector />)
-        setActivePanel = (panel) => {
-            act(() => {
-                ControlTab.mock.lastCall[0]['setActivePanel'](panel)
-            })
-        }
-    })
 
-    // Tests
-    test('renders PanelController', () => {
-        expect(screen.queryByTestId('PanelController')).toBeInTheDocument()
-    })
+// Tests
+test('renders PanelController', () => {
+    render(<MiddleSector />)
 
-    test('renders ControlTab', () => {
-        expect(screen.queryByTestId('PanelController')).toBeInTheDocument()
-    })
+    expect(screen.queryByTestId('PanelController')).toBeInTheDocument()
+})
 
-    test('pass a hook function as props to ControlTab', () => { // NOTE -- maybe test that setActivePanel is actually a React Hook ??
-        expect(ControlTab).toHaveBeenCalledWith(
-            expect.objectContaining(
-                { setActivePanel: expect.any(Function) },
-            ),
-            expect.anything()
-        )
-    })
+test('renders ControlTab', () => {
+    render(<MiddleSector />)
 
-    test('returns null on first render', () => {
-        expect(PanelController).toHaveActivePanel(null)
-    })
+    expect(screen.queryByTestId('PanelController')).toBeInTheDocument()
+})
 
-    test('return the same panel id received at the first setActive call', () => {
+test('pass a hook function as props to ControlTab', () => { // NOTE -- maybe test that setActivePanel is actually a React Hook ??
+    render(<MiddleSector />)
 
-        setActivePanel('test-panel')
+    expect(ControlTab).toHaveBeenCalledWith(
+        expect.objectContaining(
+            { setActivePanel: expect.any(Function) },
+        ),
+        expect.anything()
+    )
+})
 
-        expect(PanelController).toHaveActivePanel('test-panel')
-    })
+test('pass registerRelevantClient reducer to PanelController', () => {
+    const registerRelevantClient = new Function()
+    render(<MiddleSector registerRelevantClient={registerRelevantClient} />)
 
-    test('returns the second panel id when receives 2 different ids', () => {
+    expect(PanelController).toHaveBeenCalledWith(
+        expect.objectContaining(
+            { registerRelevantClient: registerRelevantClient },
+        ),
+        expect.anything()
+    )
+})
 
-        setActivePanel('first-panel')
-        setActivePanel('second-panel')
+test('returns null on first render', () => {
+    render(<MiddleSector />)
 
-        expect(PanelController).toHaveActivePanel('second-panel')
-    })
+    expect(PanelController).toHaveActivePanel(null)
+})
 
-    test('returns null when receives the same panel id', () => {
+test('return the same panel id received at the first setActivePanel call', () => {
+    render(<MiddleSector />)
+    const setActivePanel = panel => {
+        act(() => {
+            ControlTab.mock.lastCall[0]['setActivePanel'](panel)
+        })
+    }
 
-        setActivePanel('test-panel')
-        setActivePanel('test-panel')
+    setActivePanel('test-panel')
 
-        expect(PanelController).toHaveActivePanel(null)
-    })
+    expect(PanelController).toHaveActivePanel('test-panel')
+})
+
+test('returns the second panel id when receives 2 different ids', () => {
+    render(<MiddleSector />)
+    const setActivePanel = panel => {
+        act(() => {
+            ControlTab.mock.lastCall[0]['setActivePanel'](panel)
+        })
+    }
+
+    setActivePanel('first-panel')
+    setActivePanel('second-panel')
+
+    expect(PanelController).toHaveActivePanel('second-panel')
+})
+
+test('returns null when receives the same panel id', () => {
+    render(<MiddleSector />)
+    const setActivePanel = panel => {
+        act(() => {
+            ControlTab.mock.lastCall[0]['setActivePanel'](panel)
+        })
+    }
+
+    setActivePanel('test-panel')
+    setActivePanel('test-panel')
+
+    expect(PanelController).toHaveActivePanel(null)
 })
