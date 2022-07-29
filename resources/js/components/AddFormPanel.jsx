@@ -1,10 +1,10 @@
-import { useRef, useState } from "react"
+import { useState } from "react"
 import api from "../assets/api"
 import ApiStatus from "../assets/ApiStatus"
 
-export default function AddFormPanel() {
+export default function AddFormPanel({ registerRelevantClient }) {
 
-    const [name, setname] = useState('')
+    const [name, setName] = useState('')
     const [about, setAbout] = useState('')
 
     const [status, setStatus] = useState( ApiStatus.IDLE )
@@ -15,7 +15,15 @@ export default function AddFormPanel() {
 
         api.addClient(name, about)
         .then((response) => {
-            setname('')
+            let client = {
+                id: response.id,
+                name: name,
+                about: about
+
+            }
+            registerRelevantClient(client)
+
+            setName('')
             setAbout('')
             setStatus(ApiStatus.SUCCESS)
         })
@@ -32,7 +40,7 @@ export default function AddFormPanel() {
 
         switch(e.target.attributes.id.value){
             case 'name':
-                setname(e.target.value)
+                setName(e.target.value)
                 break
             case 'about':
                 setAbout(e.target.value)
