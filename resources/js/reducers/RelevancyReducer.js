@@ -4,8 +4,10 @@ export default function RelevancyReducer(relevantClients, client){
 
     if(relevantClients.lenght > 5){ // TODO -- make it configurable
         relevantClients.pop()
-        return relevantClients
+        let newRelevantClients = [...relevantClients]
+        return newRelevantClients
     }
 
-    return relevantClients
+    let newRelevantClients = [...relevantClients]
+    return newRelevantClients
 }
