@@ -61,17 +61,16 @@ describe('Clients Page', () => {
         // This block tests the client card internal features
         cy.get('@addedClient').within(() => {
 
-            // Expand card, create history and type one line
+            // Expand card and create history
+            cy.get('.client-history').as('history').should('not.exist')
             cy.get('.expand-toggle').as('expand').click() // NOTE -- Maybe this expand action should cover the whole client card
-            cy.get('.client-history').as('history').should('not.be.visible')
-            cy.findByLabelText('Adicionar Histórico').click().should('not.exist')
-            cy.get('history').type(history_line)
+            cy.get('@history').type(history_line)
             cy.contains('Salvando...')
             cy.contains('Salvo')
 
             // Shrink the card and assert the client data is not visible
             cy.get('@expand').click()
-            cy.get('@history').should('not.be.visible')
+            cy.get('@history').should('not.exist')
 
             // Expand the card again and assert the history line is there
             cy.get('@expand').click()
@@ -80,7 +79,7 @@ describe('Clients Page', () => {
             // Click edit button,
             cy.get('.edit-button').as('edit').click()
             cy.get('input').should('have.value', edited_client_data.name)
-            cy.findByLabelText('Cancelar').click()
+            cy.findByText('Cancelar').click()
 
             // Click the edit button, check if the client data is present in the input, change the data and click 'Edit'
             cy.get('.edit-button').as('edit').click() // TODO -- Remove this as() and get the button with @edit
@@ -94,7 +93,7 @@ describe('Clients Page', () => {
                 .clear()
                 .type(edited_client_data.about)
 
-            cy.findByLabelText('Editar').click()
+            cy.findByText('Editar').click()
             cy.get('input').should('not.be.visible')
 
             // Check if the card has the edited data
@@ -107,13 +106,13 @@ describe('Clients Page', () => {
             cy.contains('Tem certeza?')
             cy.contains('A(o) cliente deletado sera enviada(o) para a lixeira e deletado permanentemente depois de 30 dias')
             cy.contains('E possivel deletar permanentemente de forma manual na lixeira')
-            cy.findByLabelText('Cancelar').click()
+            cy.findByText('Cancelar').click()
             cy.contains(edited_client_data.name)
             cy.contains(edited_client_data.about)
 
             // Do the same thing, but click 'Yes' at the end to delete the client, and assert the cient is not there anymore
             cy.get('@delete').click()
-            cy.findByLabelText('Sim, deletar cliente').click()
+            cy.findByText('Sim, deletar cliente').click()
             cy.get('@addedClient').should('not.exist')
         })
     })
