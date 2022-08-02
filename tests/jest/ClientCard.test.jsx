@@ -45,7 +45,7 @@ test('saving feedback', async () => {
     await user.click(screen.queryByTitle('expand'))
     await user.type(screen.queryByTitle('history'), 'history line')
 
-    expect(screen.queryByText('Salvando...').toBeInTheDocument())
+    expect(screen.queryByText('Salvando...')).toBeInTheDocument()
     expect(screen.findByText('Salvo')).toBeInTheDocument()
 })
 
