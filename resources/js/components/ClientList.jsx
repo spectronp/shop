@@ -6,7 +6,7 @@ export default function ClientList({ clients }){
         <ol>
         {
             clients.map(client => (
-                <li><ClientCard client={client} id={client.id} /></li>
+                <li><ClientCard client={client} key={client.id} /></li>
             ))
         }
         </ol>
