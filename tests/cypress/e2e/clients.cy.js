@@ -62,9 +62,10 @@ describe('Clients Page', () => {
         cy.get('@addedClient').within(() => {
 
             // Expand card and create history
-            cy.get('.client-history').as('history').should('not.exist')
+            // NOTE -- Only one card expanded per time ???
+            cy.get('.client-history').should('not.exist')
             cy.get('.expand-toggle').as('expand').click() // NOTE -- Maybe this expand action should cover the whole client card
-            cy.get('@history').type(history_line)
+            cy.get('.client-history').as('history').type(history_line)
             cy.contains('Salvando...')
             cy.contains('Salvo')
 
