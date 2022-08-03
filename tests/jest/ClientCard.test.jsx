@@ -38,7 +38,7 @@ test('change expansion when user click expand button', async () => {
 })
 
 test('saving feedback', async () => {
-    api.updateHistory.mockResolvedValueOnce({})
+    api.updateHistory.mockResolvedValue({})
     const user = userEvent.setup()
     render(<ClientCard client={{}} />)
 
@@ -50,6 +50,7 @@ test('saving feedback', async () => {
 })
 
 test('call updateHistory', async () => {
+    api.updateHistory.mockResolvedValue({})
     let history = 'history line'
     const user = userEvent.setup()
     render(<ClientCard client={{}} />)
@@ -61,7 +62,7 @@ test('call updateHistory', async () => {
 })
 
 test('loading feedback', async () => {
-    api.getHistory.mockResolvedValueOnce({ history: 'history line' }) // NOTE -- return client id ???
+    api.getHistory.mockResolvedValue({ history: 'history line' }) // NOTE -- return client id ???
     const user = userEvent.setup()
     render(<ClientCard client={{}} />)
 
@@ -73,7 +74,7 @@ test('loading feedback', async () => {
 test('display saved history', async () => {
     let history = 'history line'
     const user = userEvent.setup()
-    api.getHistory.mockResolvedValueOnce({ history: history })
+    api.getHistory.mockResolvedValue({ history: history })
     render(<ClientCard client={{}} />)
 
     await user.click(screen.queryByTitle('expand'))
