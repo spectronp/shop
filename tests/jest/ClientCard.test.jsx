@@ -96,3 +96,18 @@ test('call getHistory', async () => {
 
     expect(api.getHistory).toHaveBeenCalledWith(expect.any(Number))
 })
+
+test('error feedback', async () => {
+    let error_response = {
+        error: 'error message'
+    }
+
+    api.updateHistory.mockRejectedValue(error_response)
+    const user = userEvent.setup()
+    render(<ClientCard client={{}} />)
+
+    await user.click(screen.queryByTitle('expand'))
+    await user.type(screen.queryByTitle('history'), 'history line')
+
+    expect(screen.queryByText(error_response.error)).toBeInTheDocument()
+})
