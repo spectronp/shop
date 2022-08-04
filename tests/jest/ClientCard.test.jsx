@@ -38,7 +38,7 @@ test('change expansion when user click expand button', async () => {
 })
 
 test('saving feedback', async () => {
-    api.updateHistory.mockResolvedValue({})
+    api.updateHistory.mockReturnValue( new Promise(() => {}) )
     const user = userEvent.setup()
     render(<ClientCard client={{}} />)
 
@@ -46,7 +46,17 @@ test('saving feedback', async () => {
     await user.type(screen.queryByTitle('history'), 'history line')
 
     expect(screen.queryByText('Salvando...')).toBeInTheDocument()
-    expect(screen.findByText('Salvo')).toBeInTheDocument()
+})
+
+test('saved feedback', async () => {
+    api.updateHistory.mockResolvedValue({})
+    const user = userEvent.setup()
+    render(<ClientCard client={{}} />)
+
+    await user.click(screen.queryByTitle('expand'))
+    await user.type(screen.queryByTitle('history'), 'history line')
+
+    expect(screen.queryByText('Salvo')).toBeInTheDocument()
 })
 
 test('call updateHistory', async () => {
