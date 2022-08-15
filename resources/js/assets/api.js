@@ -1,22 +1,22 @@
 import axios from "axios"
 
-// Get MIX_APP_URL var from .env file
+// Get MIX_APP_URL and MIX_APP_PORT from .env file
 const APP_URL = process.env.MIX_APP_URL
 const APP_PORT = process.env.MIX_APP_PORT
 
 // NOTE -- use window.axios ???
 const instance = axios.create({
-    baseURL: `${APP_URL}:${APP_PORT}/api/clients`
+    baseURL: `${APP_URL}:${APP_PORT}/api`
 })
 
+// TODO -- error handling
 const api = {
     addClient: async (name, about) => {
 
         let response
 
         try {
-            console.log('api try')
-            response = await instance.post(null , {
+            response = await instance.post('/clients' , {
                 client: {
                     name: name,
                     about: about
@@ -24,7 +24,6 @@ const api = {
             })
 
         } catch (error) {
-            // TODO -- error handling
 
             if(error.response){
                 console.log(error.response)
@@ -35,6 +34,36 @@ const api = {
             }
 
             throw error
+        }
+
+        return response.data
+    },
+
+    getHistory: async id => {
+        let response
+
+        try {
+            response = await instance.get(`/clients/${id}/history`)
+        } catch (error) {
+            throw {
+                error: error,
+                message: 'get history error'
+            }
+        }
+
+        return response.data
+    },
+
+    updateHistory: async (id, history) => {
+        let response
+
+        try {
+            response = await instance.put(`/clients/${id}/history`, { history: history })
+        } catch (error){
+            throw {
+                error: error,
+                message: 'update history error'
+            }
         }
 
         return response.data
