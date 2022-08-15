@@ -1,13 +1,23 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
 import ClientCard from '../../resources/js/components/ClientCard'
 import api from '../../resources/js/assets/api'
 
+
 jest.mock('../../resources/js/assets/api', () => ({
-    getHistory: jest.fn( () => Promise.resolve() ),
+    getHistory: jest.fn( () => Promise.resolve({ history: '' }) ),
     updateHistory: jest.fn( () => Promise.resolve() )
 }) )
+
+function setMocks(){
+    api.getHistory.mockResolvedValue({ history: '' })
+    api.updateHistory.mockResolvedValue()
+}
+
+afterEach(() => {
+    setMocks()
+})
 
 test('display client data', () => {
     let client = {
@@ -74,14 +84,24 @@ test('display saved history', async () => {
 })
 
 test('call updateHistory', async () => {
+    jest.useFakeTimers()
     let history = 'history line'
-    const user = userEvent.setup()
+    const user = userEvent.setup({
+        advanceTimers: () => jest.runOnlyPendingTimers(), // TODO -- search why i cant use "delay: null here"
+    })
     render(<ClientCard client={{ id: 42 }} />)
 
     await user.click(screen.queryByTitle('expand'))
-    await user.type(screen.queryByTitle('history'), history)
+
+    let history_element = await screen.findByTitle('history')
+    await user.type(history_element, history)
+
+    act(() => {
+        jest.runAllTimers()
+    })
 
     expect(api.updateHistory).toHaveBeenLastCalledWith(42, history)
+    jest.useRealTimers()
 })
 
 test('saving feedback', async () => {
@@ -93,18 +113,18 @@ test('saving feedback', async () => {
     await user.type(screen.queryByTitle('history'), 'history line')
 
     expect(screen.queryByText('Salvando...')).toBeInTheDocument()
-    api.updateHistory.mockResolvedValue()
 })
 
 test('saved feedback', async () => {
-    // api.updateHistory.mockResolvedValue() // TODO -- search why I need this line
     const user = userEvent.setup()
     render(<ClientCard client={{}} />)
 
     await user.click(screen.queryByTitle('expand'))
-    await user.type(screen.queryByTitle('history'), 'history line')
+    let history_element = await screen.findByTitle('history')
+    await user.type(history_element, 'history line')
 
-    expect(screen.queryByText('Salvo')).toBeInTheDocument()
+    let saved = await screen.findByText('Salvo')
+    expect(saved).toBeInTheDocument()
 })
 
 
@@ -123,16 +143,26 @@ test('error feedback when loading history', async () => {
 })
 
 test('error feedback when updating history', async () => {
+    jest.useFakeTimers()
     let error_response = {
         message: 'error message'
     }
 
     api.updateHistory.mockRejectedValue(error_response)
-    const user = userEvent.setup()
+    const user = userEvent.setup({
+        advanceTimers: () => jest.runOnlyPendingTimers()
+    })
     render(<ClientCard client={{}} />)
 
     await user.click(screen.queryByTitle('expand'))
-    await user.type(screen.queryByTitle('history'), 'history line')
 
-    expect(screen.queryByText(error_response.message)).toBeInTheDocument()
+    let history_element = await screen.findByTitle('history')
+    await user.type(history_element, 'history line')
+
+    act(() => {
+        jest.runAllTimers()
+    })
+
+    let feedback = await screen.findByText(error_response.message)
+    expect(feedback).toBeInTheDocument()
 })
