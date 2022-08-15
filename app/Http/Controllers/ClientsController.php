@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\Resquest;
 use App\Models\Client;
+use Illuminate\Http\Request;
 
 class ClientsController extends Controller
 {
@@ -61,10 +62,10 @@ class ClientsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Client $client)
     {
         //
     }
@@ -73,10 +74,10 @@ class ClientsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Client $client)
     {
         //
     }
@@ -84,11 +85,38 @@ class ClientsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Client $client)
     {
         //
+    }
+
+    /**
+     * Display the hisotry of the specified client
+     *
+     * @param Client $client
+     * @return \Illuminate\Http\Response
+     */
+    public function getHistory(Client $client)
+    {
+        $history = $client->history ?? '';
+
+        return response([
+            'history' => $history
+        ]);
+    }
+
+    /**
+     * Update history of the specified client
+     *
+     * @param Client $client
+     * @return \Illuminate\Http\Response
+     */
+    public function updateHistory(Request $request , Client $client)
+    {
+        $client->history = $request->input('history');
+        $client->save();
     }
 }
