@@ -61,4 +61,51 @@ class ClientsApiTest extends TestCase
             "error" => "Other client with the same description already exists" // NOTE -- change this message ???
         ]);
     }
+
+    public function test_can_get_history(): void
+    {
+        $history = 'history string';
+
+        $client = Client::create([
+            'name' => 'John' // Can't insert history here because it is not in $fillable
+        ]);
+        $client->history = $history;
+        $client->save();
+
+        $response = $this->getJson("/api/clients/{$client->id}/history");
+
+        $response->assertStatus(200)->assertJson([
+            'history' => $history
+        ]);
+    }
+
+    public function test_return_empty_string_if_history_is_null(): void
+    {
+        $client = Client::create([ 'name' => 'John' ]);
+
+        $response = $this->getJson("/api/clients/{$client->id}/history");
+
+        $response->assertStatus(200)->assertJson( fn (AssertableJson $json) =>
+            $json->where('history', '')
+        );
+    }
+
+    public function test_can_update_history(): void
+    {
+        $initial_history = 'first hisotry';
+        $updated_history = 'second history';
+        $client = Client::create([
+            'name' => 'John',
+            'history' => $initial_history
+        ]);
+
+        $response = $this->putJson("/api/clients/{$client->id}/history", [ 'history' => $updated_history ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('clients', [
+            'name' => 'John',
+            'history' => $updated_history
+        ]);
+    }
 }
