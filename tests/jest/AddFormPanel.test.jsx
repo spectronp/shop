@@ -5,11 +5,7 @@ import userEvent from '@testing-library/user-event'
 import AddFormPanel from '../../resources/js/components/AddFormPanel'
 import api from '../../resources/js/assets/api'
 
-jest.mock('../../resources/js/assets/api', () => {
-    return {
-        addClient: jest.fn()
-    }
-})
+jest.mock('../../resources/js/assets/api', () => ({ addClient: jest.fn() }) )
 
 const submitButtonText = 'Cadastrar'
 const nameFieldText = 'Nome'
