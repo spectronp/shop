@@ -7,8 +7,6 @@ export default function ClientCard({ client }){
     const [history, setHistory] = useState(null)
     const [status, setStatus] = useState({
         apiStatus: ApiStatus.IDLE,
-        apiAction: null,
-        error: null
     })
 
     if(expanded === true && history === null) {
@@ -16,8 +14,6 @@ export default function ClientCard({ client }){
         .then( response => {
             setStatus({
                 apiStatus: ApiStatus.IDLE,
-                apiAction: api.getHistory,
-                error: null
             })
             setHistory(response.history)
         })
@@ -33,40 +29,64 @@ export default function ClientCard({ client }){
         setStatus({
             apiStatus: ApiStatus.WAITING,
             apiAction: api.getHistory,
-            error: null
         })
 
         setHistory('') // TODO -- retry to load history after some time
     }
 
-    function handleChange(e){ // TODO -- wait some time for more input before calling api
+    function handleChange(e){
         setHistory(e.target.value)
 
-        api.updateHistory(client.id, e.target.value)
-        .then( response => {
-            setStatus({
-                apiStatus: ApiStatus.SUCCESS,
-                apiAction: api.updateHistory,
-                error: null
-            })
+        // Reject last queued api call
+        if(status.lastCall) status.lastCall()
+
+        let callReject
+
+        new Promise( (resolve , reject) => { // TODO -- make api handle delay and retry
+
+            callReject = () => {
+                reject({
+                    message: 'cancelled by new call' // NOTE -- return something else on rejection
+                })
+            }
+
+            setTimeout(() => {
+                resolve()
+            }, 200)
         })
-        .catch( error => {
-            setStatus({
-                apiStatus: ApiStatus.ERROR,
-                apiAction: api.updateHistory,
-                error: error
-            })
-        })
+        .then(() => {
+                api.updateHistory(client.id, e.target.value)
+                .then( () => {
+                    setStatus({
+                        apiStatus: ApiStatus.SUCCESS,
+                        apiAction: api.updateHistory,
+                    })
+                })
+                .catch( error => {
+                    setStatus({
+                        apiStatus: ApiStatus.ERROR,
+                        apiAction: api.updateHistory,
+                        error: error
+                    })
+                })
+            },
+
+            reason => {
+                if(reason.message == 'cancelled by new call') return
+            }
+        )
 
         setStatus({
             apiStatus: ApiStatus.WAITING,
             apiAction: api.updateHistory,
-            error: null
+            lastCall: callReject,
         })
     }
 
     function feedback(){
         switch( status.apiStatus ) {
+            case ApiStatus.IDLE:
+                return null
             case ApiStatus.SUCCESS:
                 return 'Salvo'
             case ApiStatus.WAITING:
@@ -80,6 +100,12 @@ export default function ClientCard({ client }){
         }
     }
 
+    function isLoading(){
+        if(status.apiStatus == ApiStatus.WAITING && status.apiAction == api.getHistory) return true
+
+        return false
+    }
+
     return (
         <div className="client-card">
         <button title="expand" className="expand-toggle" onClick={() => setExpansion( ! expanded )}></button>
@@ -89,7 +115,11 @@ export default function ClientCard({ client }){
             expanded ?
                 <>
                 <p>{feedback()}</p>
-                <textarea title="history" className="client-history" value={history} onChange={handleChange} ></textarea>
+                {
+                    isLoading()
+                        ? null
+                        : <textarea title="history" className="client-history" value={history} onChange={handleChange} ></textarea>
+                }
                 </>
             : null
         }
