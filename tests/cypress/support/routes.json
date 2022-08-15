@@ -109,5 +109,53 @@
     "method": [
       "POST"
     ]
+  },
+  "clients.index": {
+    "name": "clients.index",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ClientsController@index",
+    "uri": "api/clients",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "clients.store": {
+    "name": "clients.store",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ClientsController@store",
+    "uri": "api/clients",
+    "method": [
+      "POST"
+    ]
+  },
+  "clients.show": {
+    "name": "clients.show",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ClientsController@show",
+    "uri": "api/clients/{client}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "clients.update": {
+    "name": "clients.update",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ClientsController@update",
+    "uri": "api/clients/{client}",
+    "method": [
+      "PUT",
+      "PATCH"
+    ]
+  },
+  "clients.destroy": {
+    "name": "clients.destroy",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ClientsController@destroy",
+    "uri": "api/clients/{client}",
+    "method": [
+      "DELETE"
+    ]
   }
 }

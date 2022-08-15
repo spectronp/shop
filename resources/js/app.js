@@ -1,14 +1,8 @@
-require('./bootstrap');
-/*
-import { createRoot } from 'react-dom/client';
-import SearchBar from './react/SearchBar';
+require('./bootstrap')
 
-const root = createRoot(document.getElementById('root'));
+import { createRoot } from 'react-dom/client'
+import ClientsPage from './components/ClientsPage'
 
-function handleValueChange(e) {
-    let target = e.target;
-    this.render(<SearchBar value={target.value} />);
-}
+const root = createRoot(document.getElementById('root'))
 
-root.render(<SearchBar value={""} />);
-*/
+root.render(<ClientsPage />)
