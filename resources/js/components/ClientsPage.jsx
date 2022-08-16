@@ -12,7 +12,7 @@ export default function ClientsPage(){
         <>
         {
             editModal.isOpen
-                ? <ClientEditModal client={editModal.client} />
+                ? <ClientEditModal client={editModal.client} setEditModal={setEditModal} />
                 : null
         }
         <MiddleSector registerRelevantClient={registerRelevantClient} />
