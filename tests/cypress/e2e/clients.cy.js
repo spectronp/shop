@@ -77,9 +77,10 @@ describe('Clients Page', () => {
             cy.get('@expand').click()
             cy.get('@history').should('have.value', history_line)
 
-            // Click edit button,
+            // Click edit button, assert client name is in the input field and close
             cy.get('.edit-button').as('edit').click()
-            cy.get('input').should('have.value', edited_client_data.name)
+            cy.findByText('Nome').should('have.value', client_data.name)
+            cy,findByText('Sobre').should('have.value', client_data.about)
             cy.findByText('Cancelar').click()
 
             // Click the edit button, check if the client data is present in the input, change the data and click 'Edit'
