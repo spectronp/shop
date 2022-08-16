@@ -114,7 +114,7 @@ export default function ClientCard({ client, setEditModal }){
         {
             expanded ?
                 <>
-                <button className="edit-button" onClick={ setEditModal({ isOpen: true, client: client }) } ></button>
+                <button className="edit-button" onClick={ () => setEditModal({ isOpen: true, client: client }) } ></button>
                 <p>{feedback()}</p>
                 {
                     isLoading()
