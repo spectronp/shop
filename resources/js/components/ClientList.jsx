@@ -1,6 +1,6 @@
 import ClientCard from './ClientCard'
 
-export default function ClientList({ clients, setEditModalOpen }){
+export default function ClientList({ clients, setEditModal }){
     return (
         <div>
         <ol>
