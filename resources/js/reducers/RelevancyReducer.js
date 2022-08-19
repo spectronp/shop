@@ -1,13 +1,16 @@
 
 export default function RelevancyReducer(relevantClients, client){
-    relevantClients.unshift(client)
+    let newRelevantClients = relevantClients.filter( relClient => {
+        if(relClient.id == client.id) return false
+        return true
+    })
 
-    if(relevantClients.length > 5){ // TODO -- make it configurable
-        relevantClients.pop()
-        let newRelevantClients = [...relevantClients]
+    newRelevantClients.unshift(client)
+
+    if(newRelevantClients.length > 5){ // TODO -- make it configurable
+        newRelevantClients.pop()
         return newRelevantClients
     }
 
-    let newRelevantClients = [...relevantClients]
     return newRelevantClients
 }
