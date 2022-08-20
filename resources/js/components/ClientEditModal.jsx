@@ -5,7 +5,14 @@ export default function ClientEditModal({ client, setEditModal }){
     const [about, setAbout] = useState( client.about ?? '' )
 
     function handleChange(e){
-
+        switch(e.target.name){
+            case 'name':
+                setName(e.target.value)
+                break
+            case 'about':
+                setAbout(e.target.value)
+                break
+        }
     }
 
     function handleSubmit(e){
