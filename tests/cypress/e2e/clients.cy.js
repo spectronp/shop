@@ -87,7 +87,7 @@ describe('Clients Page', () => {
         cy.findByLabelText('Sobre').should('have.value', client_data.about)
         cy.findByText('Cancelar').click()
 
-        // Click the edit button, check if the client data is present in the input, change the data and click 'Edit'
+        // Click the edit button, check if the client data is present in the input, change the data and click 'Save'
         cy.get('@edit').click()
 
         cy.findByLabelText('Nome')
@@ -100,7 +100,7 @@ describe('Clients Page', () => {
             .clear()
             .type(edited_client_data.about)
 
-        cy.findByText('Editar').click()
+        cy.findByText('Salvar').click()
 
         // Assert edit modal is closed after saving
         cy.findByLabelText('Nome').should('not.exist')
