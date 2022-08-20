@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import api from '../assets/api'
 
-export default function ClientEditModal({ client, setEditModal }){
+export default function ClientEditModal({ client, setEditModal, registerRelevantClient }){
     const [name, setName] = useState(client.name)
     const [about, setAbout] = useState( client.about ?? '' )
 
@@ -17,6 +18,12 @@ export default function ClientEditModal({ client, setEditModal }){
 
     function handleSubmit(e){
         e.preventDefault()
+
+        api.updateClient(client.id, name, about)
+
+        setEditModal({ isOpen: false })
+
+        registerRelevantClient({ id: client.id, name: name, about: about })
     }
 
     return <form onSubmit={ handleSubmit }>
