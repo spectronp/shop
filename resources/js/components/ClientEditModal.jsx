@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 export default function ClientEditModal({ client, setEditModal }){
     const [name, setName] = useState(client.name)
-    const [about, setAbout] = useState(client.about)
+    const [about, setAbout] = useState( client.about ?? '' )
 
     function handleChange(e){
 
