@@ -79,7 +79,7 @@ class ClientsController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        //
+        $client->update($request->all());
     }
 
     /**
