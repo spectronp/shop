@@ -108,4 +108,23 @@ class ClientsApiTest extends TestCase
             'history' => $updated_history
         ]);
     }
+
+    public function test_can_update_client(): void
+    {
+        $client = Client::create([
+            'name' => 'John',
+            'about' => 'father'
+        ]);
+        $updated_client = [
+            'name' => 'Not John',
+            'about' => 'mother'
+        ];
+
+        $response = $this->putJson("/api/clients/{$client->id}", $updated_client);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseMissing('clients', $client->getAttributes());
+        $this->assertDatabaseHas('clients', $updated_client);
+    }
 }
