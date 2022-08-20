@@ -2,7 +2,7 @@ import { useState } from "react"
 import api from "../assets/api"
 import ApiStatus from "../assets/ApiStatus"
 
-export default function ClientCard({ client }){
+export default function ClientCard({ client, setEditModal }){
     const [expanded, setExpansion] = useState(false)
     const [history, setHistory] = useState(null)
     const [status, setStatus] = useState({
@@ -114,6 +114,7 @@ export default function ClientCard({ client }){
         {
             expanded ?
                 <>
+                <button className="edit-button" onClick={ () => setEditModal({ isOpen: true, client: client }) } ></button>
                 <p>{feedback()}</p>
                 {
                     isLoading()

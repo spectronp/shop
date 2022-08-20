@@ -10,6 +10,7 @@ const instance = axios.create({
 })
 
 // TODO -- error handling
+// TODO -- make this more DRY
 const api = {
     addClient: async (name, about) => {
 
@@ -63,6 +64,21 @@ const api = {
             throw {
                 error: error,
                 message: 'update history error'
+            }
+        }
+
+        return response.data
+    },
+
+    updateClient: async (id, name, about) => {
+        let response
+
+        try {
+            response = await instance.put(`/clients/${id}`, { name: name, about: about })
+        } catch (error) {
+            throw {
+                error: error,
+                message: 'update client error'
             }
         }
 
