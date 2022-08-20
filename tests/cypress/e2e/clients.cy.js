@@ -50,6 +50,7 @@ describe('Clients Page', () => {
         cy.get('@addFormToggle').click()
         cy.findByLabelText('Nome').should('have.value', '')
         cy.findByLabelText('Sobre').should('have.value', '')
+        cy.get('@addFormToggle').click()
 
         // Check if the new added client is in the more recent section
         cy.contains('Mais recentes').parents('#most-relevant-wrapper')
@@ -87,9 +88,9 @@ describe('Clients Page', () => {
         cy.findByText('Cancelar').click()
 
         // Click the edit button, check if the client data is present in the input, change the data and click 'Edit'
-        cy.get('.edit-button').as('edit').click() // TODO -- Remove this as() and get the button with @edit
+        cy.get('@edit').click()
 
-        cy.findByLabelText('Name')
+        cy.findByLabelText('Nome')
             .should('have.value', client_data.name)
             .clear()
             .type(edited_client_data.name)
@@ -100,11 +101,16 @@ describe('Clients Page', () => {
             .type(edited_client_data.about)
 
         cy.findByText('Editar').click()
-        cy.get('input').should('not.be.visible')
+
+        // Assert edit modal is closed after saving
+        cy.findByLabelText('Nome').should('not.exist')
+        cy.findByLabelText('Sobre').should('not.exist')
 
         // Check if the card has the edited data
-        cy.contains(edited_client_data.name)
-        cy.contains(edited_client_data.about)
+        cy.get('@addedClient').within(() => {
+            cy.contains(edited_client_data.name)
+            cy.contains(edited_client_data.about)
+        })
 
         // Click 'edit', then 'delete', check for 'Are u sure?' message, click 'cancel' and check if the client still there
         cy.get('@edit').click()
