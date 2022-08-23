@@ -20,12 +20,22 @@ test('put client at the start and remove the last one if lenght > 5', () => {
     expect(result).toEqual(expected)
 })
 
-test('remove client with same id', () => {
+test('remove client with duplicated id', () => {
     let initialArray = [ {id: 1}, {id: 2}, {id: 3}, {id: 4} ]
     let toBeInserted = {id: 3}
     let expected = [ {id: 3}, {id: 1}, {id: 2}, {id: 4} ]
 
     let result = RelevancyReducer(initialArray, toBeInserted)
+
+    expect(result).toEqual(expected)
+})
+
+test('remove client by id', () => {
+    let initial = [ {id: 1}, {id: 2}, {id: 3} ]
+    let toBeRemoved = 2
+    let expected = [ {id: 1}, {id: 3} ]
+
+    let result = RelevancyReducer(initial, toBeRemoved)
 
     expect(result).toEqual(expected)
 })

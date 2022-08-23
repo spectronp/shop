@@ -116,16 +116,14 @@ describe('Clients Page', () => {
         cy.get('@edit').click()
         cy.get('.delete-client').as('delete').click()
         cy.contains('Tem certeza?')
-        cy.contains('A(o) cliente deletado sera enviada(o) para a lixeira e deletado permanentemente depois de 30 dias')
-        cy.contains('E possivel deletar permanentemente de forma manual na lixeira')
-        cy.findByText('Cancelar').click()
+        cy.findByText('Não').click()
         cy.contains(edited_client_data.name)
         cy.contains(edited_client_data.about)
 
-        // Do the same thing, but click 'Yes' at the end to delete the client, and assert the cient is not there anymore
+        // Do the same thing, but click 'Yes' at the end to delete the client, and assert the client is not there anymore
         cy.get('@delete').click()
         cy.findByText('Sim, deletar cliente').click()
-        cy.get('@addedClient').should('not.exist')
+        cy.findByText(edited_client_data.name).should('not.exist')
     })
 
     it('Clients Search', () => {

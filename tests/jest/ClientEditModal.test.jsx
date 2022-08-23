@@ -5,7 +5,8 @@ import userEvent from "@testing-library/user-event"
 import api from "../../resources/js/assets/api"
 
 jest.mock("../../resources/js/assets/api", () => ({
-    updateClient: jest.fn(() => Promise.resolve())
+    updateClient: jest.fn(() => Promise.resolve()),
+    deleteClient: jest.fn(() => Promise.resolve())
 }) )
 
 function setMocks(){
@@ -93,4 +94,82 @@ test('set saved client relevancy', async () => {
     await user.click(screen.queryByText('Salvar'))
 
     expect(registerRelevantClientMock).toHaveBeenCalledWith(expect.objectContaining({ id: client.id, name: client.name }))
+})
+
+test('delete section, open and close', async () => {
+    const user = userEvent.setup()
+    render(<ClientEditModal client={{}} />)
+
+    await user.click(screen.queryByText('Deletar'))
+
+    expect(screen.queryByText('Nome')).not.toBeInTheDocument()
+    expect(screen.queryByText('Tem certeza?')).toBeInTheDocument()
+
+    await user.click(screen.queryByText('Não'))
+
+    expect(screen.queryByText('Tem certeza?')).not.toBeInTheDocument()
+    expect(screen.queryByText('Nome')).toBeInTheDocument()
+})
+
+test('call deleteClient', async () => {
+    let client_id = 42
+    const user = userEvent.setup()
+    render(<ClientEditModal client={{ id: client_id }} setEditModal={ new Function } registerRelevantClient={ new Function } />)
+
+    await user.click(screen.queryByText('Deletar'))
+    await user.click(screen.queryByText('Sim, deletar cliente'))
+
+    expect(api.deleteClient).toHaveBeenCalledWith(client_id)
+})
+
+test('remove client from relevants', async () => {
+    let client_id = 42
+    const registerRelevantClientMock = jest.fn()
+    const user = userEvent.setup()
+    render(<ClientEditModal client={{id: client_id}} setEditModal={ new Function } registerRelevantClient={registerRelevantClientMock} />)
+
+    await user.click(screen.queryByText('Deletar'))
+    await user.click(screen.queryByText('Sim, deletar cliente'))
+
+    expect(registerRelevantClientMock).toHaveBeenCalledWith(client_id)
+})
+
+test('close edit after deletion', async () => {
+    const user = userEvent.setup()
+    const setEditModalMock = jest.fn()
+    render(<ClientEditModal client={{}} setEditModal={setEditModalMock} registerRelevantClient={ new Function } />)
+
+    await user.click(screen.queryByText('Deletar'))
+    await user.click(screen.queryByText('Sim, deletar cliente'))
+
+    expect(setEditModalMock).toHaveBeenCalledWith({ isOpen: false })
+})
+
+test('waiting feedback after click to delete', async () => {
+    api.deleteClient.mockReturnValue( new Promise(() => {}) )
+    const user = userEvent.setup()
+    render(<ClientEditModal client={{}} setEditModal={ new Function } registerRelevantClient={ new Function } />)
+
+    await user.click(screen.queryByText('Deletar'))
+    await user.click(screen.queryByText('Sim, deletar cliente'))
+
+    expect(screen.queryByText('Sim, deletar cliente')).not.toBeInTheDocument()
+    expect(screen.queryByText('Não')).not.toBeInTheDocument()
+    expect(screen.queryByText('Deletando...')).toBeInTheDocument()
+})
+
+test('error feedback on deletion', async () => {
+    let error_message = 'error message'
+    api.deleteClient.mockRejectedValue({ message: error_message })
+    const user = userEvent.setup()
+    render(<ClientEditModal client={{}} setEditModal={ new Function } registerRelevantClient={ new Function } />)
+
+    await user.click(screen.queryByText('Deletar'))
+    await user.click(screen.queryByText('Sim, deletar cliente'))
+
+    expect(screen.queryByText('Erro: '.concat(error_message))).toBeInTheDocument()
+    expect(screen.queryByText('Tentar outra vez?')).toBeInTheDocument()
+    expect(screen.queryByText('Sim, deletar cliente')).toBeInTheDocument()
+    expect(screen.queryByText('Não')).toBeInTheDocument()
+
 })

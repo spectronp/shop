@@ -127,4 +127,17 @@ class ClientsApiTest extends TestCase
         $this->assertDatabaseMissing('clients', $client->getAttributes());
         $this->assertDatabaseHas('clients', $updated_client);
     }
+
+    public function test_can_delete_client(): void
+    {
+        $client = Client::create([
+            'name' => 'John'
+        ]);
+
+        $response = $this->deleteJson("/api/clients/{$client->id}");
+        $deleted_client = Client::withTrashed()->find($client->id);
+
+        $response->assertStatus(200);
+        $this->assertTrue($deleted_client->trashed());
+    }
 }

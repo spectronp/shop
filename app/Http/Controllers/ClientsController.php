@@ -90,7 +90,7 @@ class ClientsController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $client->delete();
     }
 
     /**

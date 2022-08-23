@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('about')->nullable();
             $table->text('history')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
