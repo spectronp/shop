@@ -83,6 +83,19 @@ const api = {
         }
 
         return response.data
+    },
+
+    deleteClient: async id => {
+        let response
+
+        try {
+            response = await instance.delete(`/clients/${id}`)
+        } catch (error){
+            throw {
+                error: error,
+                message: 'delete client error'
+            }
+        }
     }
 }
 
