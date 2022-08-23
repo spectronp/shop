@@ -116,9 +116,7 @@ describe('Clients Page', () => {
         cy.get('@edit').click()
         cy.get('.delete-client').as('delete').click()
         cy.contains('Tem certeza?')
-        cy.contains('A(o) cliente deletado sera enviada(o) para a lixeira e deletado permanentemente depois de 30 dias')
-        cy.contains('E possivel deletar permanentemente de forma manual na lixeira')
-        cy.findByText('Cancelar').click()
+        cy.findByText('Não').click()
         cy.contains(edited_client_data.name)
         cy.contains(edited_client_data.about)
 
