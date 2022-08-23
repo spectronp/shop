@@ -120,10 +120,10 @@ describe('Clients Page', () => {
         cy.contains(edited_client_data.name)
         cy.contains(edited_client_data.about)
 
-        // Do the same thing, but click 'Yes' at the end to delete the client, and assert the cient is not there anymore
+        // Do the same thing, but click 'Yes' at the end to delete the client, and assert the client is not there anymore
         cy.get('@delete').click()
         cy.findByText('Sim, deletar cliente').click()
-        cy.get('@addedClient').should('not.exist')
+        cy.findByText(edited_client_data.name).should('not.exist')
     })
 
     it('Clients Search', () => {
