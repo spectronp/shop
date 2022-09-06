@@ -3,9 +3,9 @@ import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
 
 import AddFormPanel from '../../resources/js/components/AddFormPanel'
-import api from '../../resources/js/assets/api'
+import { api } from '../../resources/js/assets/api'
 
-jest.mock('../../resources/js/assets/api', () => ({ addClient: jest.fn() }) )
+jest.mock('../../resources/js/assets/api')
 
 const submitButtonText = 'Cadastrar'
 const nameFieldText = 'Nome'
@@ -25,7 +25,7 @@ test('no feedback by dafault', () => {
 })
 
 test('success feedback', async () => {
-    api.addClient.mockResolvedValueOnce({ id: 1 })
+    api.addClient.mockResolvedValueOnce( 1 )
     const user = userEvent.setup()
     const emptyFunction = new Function()
     render(<AddFormPanel registerRelevantClient={emptyFunction} />)
@@ -53,7 +53,7 @@ test('call registerRelevantClient on success', async () => {
         about: 'hacker'
     }
 
-    api.addClient.mockResolvedValueOnce({ id: 1 })
+    api.addClient.mockResolvedValueOnce( 1 )
     const registerRelevantClientMock = jest.fn()
     const user = userEvent.setup()
     render(<AddFormPanel registerRelevantClient={registerRelevantClientMock} />)
@@ -78,7 +78,7 @@ test('error feedback', async () => {
 })
 
 test('wipe feedback when user type again', async () => {
-    api.addClient.mockResolvedValueOnce({ id: 1 })
+    api.addClient.mockResolvedValueOnce( 1 )
     const user = userEvent.setup()
     const emptyFunction = new Function()
     render(<AddFormPanel registerRelevantClient={emptyFunction} />)

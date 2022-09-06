@@ -2,16 +2,13 @@ import { render, screen, act } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
 import ClientCard from '../../resources/js/components/ClientCard'
-import api from '../../resources/js/assets/api'
+import { api } from '../../resources/js/assets/api'
 
 
-jest.mock('../../resources/js/assets/api', () => ({
-    getHistory: jest.fn( () => Promise.resolve({ history: '' }) ),
-    updateHistory: jest.fn( () => Promise.resolve() )
-}) )
+jest.mock('../../resources/js/assets/api')
 
 function setMocks(){
-    api.getHistory.mockResolvedValue({ history: '' })
+    api.getHistory.mockResolvedValue('')
     api.updateHistory.mockResolvedValue()
 }
 
@@ -75,7 +72,7 @@ test('loading feedback', async () => {
 test('display saved history', async () => {
     let history = 'history line'
     const user = userEvent.setup()
-    api.getHistory.mockResolvedValueOnce({ history: history })
+    api.getHistory.mockResolvedValueOnce( history )
     render(<ClientCard client={{}} />)
 
     await user.click(screen.queryByTitle('expand'))

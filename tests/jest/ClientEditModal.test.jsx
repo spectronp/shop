@@ -2,12 +2,9 @@ import { render, screen } from "@testing-library/react"
 import '@testing-library/jest-dom'
 import ClientEditModal from "../../resources/js/components/ClientEditModal"
 import userEvent from "@testing-library/user-event"
-import api from "../../resources/js/assets/api"
+import { api } from "../../resources/js/assets/api"
 
-jest.mock("../../resources/js/assets/api", () => ({
-    updateClient: jest.fn(() => Promise.resolve()),
-    deleteClient: jest.fn(() => Promise.resolve())
-}) )
+jest.mock("../../resources/js/assets/api")
 
 function setMocks(){
     api.updateClient.mockResolvedValue()
