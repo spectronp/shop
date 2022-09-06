@@ -5,98 +5,67 @@ const APP_URL = process.env.MIX_APP_URL
 const APP_PORT = process.env.MIX_APP_PORT
 
 // NOTE -- use window.axios ???
-const instance = axios.create({
-    baseURL: `${APP_URL}:${APP_PORT}/api`
-})
+// NOTE -- use Bluebird or RxJs ???
 
 // TODO -- error handling
-// TODO -- make this more DRY
-const api = {
-    addClient: async (name, about) => {
 
-        let response
+class Api{
+    constructor(){
+        this.instance = axios.create({
+            baseURL: `${APP_URL}:${APP_PORT}/api`
+        })
+        this.lastCallReject = null
+    }
 
-        try {
-            response = await instance.post('/clients' , {
-                client: {
-                    name: name,
-                    about: about
-                }
-            })
+    async apiCall(method, url, params, delay = 0){
+        if(this.lastCallReject) this.lastCallReject('newCall')
 
-        } catch (error) {
+        let final_response
+        let apiCall
 
-            if(error.response){
-                console.log(error.response)
-            } else if(error.request) {
-                console.log('request')
-            } else if (error.message){
-                console.log(error)
-            }
+        await new Promise((resolve, reject) => {
+            this.lastCallReject = reject
+            setTimeout(() => {
+                resolve()
+            }, delay)
+        }).then(() => {
+            apiCall = method(url, params)
+            .then(response => {
+                   if( response != undefined ) final_response = response.data
+                })
+            },
+            () => {}
+        )
 
-            throw error
-        }
+        await apiCall
 
-        return response.data
-    },
+        return final_response
+    }
 
-    getHistory: async id => {
-        let response
+    async addClient(name, about){
+        let res = await this.apiCall(this.instance.post, '/clients',{ client: { name: name, about: about} })
+        return res['id']
+    }
 
-        try {
-            response = await instance.get(`/clients/${id}/history`)
-        } catch (error) {
-            throw {
-                error: error,
-                message: 'get history error'
-            }
-        }
+    async updateClient(id, name, about){
+        return this.apiCall(this.instance.put, `/clients/${id}`, { name: name, about: about})
+    }
 
-        return response.data
-    },
+    async deleteClient(id){
+        return this.apiCall(this.instance.delete, `/clients/${id}`)
+    }
 
-    updateHistory: async (id, history) => {
-        let response
+    async getHistory(id){
+        let res = await this.apiCall(this.instance.get, `/clients/${id}/history`)
+        return res['history']
+    }
 
-        try {
-            response = await instance.put(`/clients/${id}/history`, { history: history })
-        } catch (error){
-            throw {
-                error: error,
-                message: 'update history error'
-            }
-        }
-
-        return response.data
-    },
-
-    updateClient: async (id, name, about) => {
-        let response
-
-        try {
-            response = await instance.put(`/clients/${id}`, { name: name, about: about })
-        } catch (error) {
-            throw {
-                error: error,
-                message: 'update client error'
-            }
-        }
-
-        return response.data
-    },
-
-    deleteClient: async id => {
-        let response
-
-        try {
-            response = await instance.delete(`/clients/${id}`)
-        } catch (error){
-            throw {
-                error: error,
-                message: 'delete client error'
-            }
-        }
+    async updateHistory(id, history){
+        let delay = 200
+        return this.apiCall(this.instance.put, `/clients/${id}/history`, { history: history}, delay)
     }
 }
 
-export default api
+export default Api
+
+export const api = new Api()

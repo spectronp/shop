@@ -1,5 +1,5 @@
 import { useState } from "react"
-import api from "../assets/api"
+import { api } from "../assets/api"
 import ApiStatus from "../assets/ApiStatus"
 
 export default function ClientCard({ client, setEditModal }){
@@ -15,7 +15,7 @@ export default function ClientCard({ client, setEditModal }){
             setStatus({
                 apiStatus: ApiStatus.IDLE,
             })
-            setHistory(response.history)
+            setHistory(response)
         })
         .catch(error => {
             setStatus({

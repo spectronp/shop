@@ -1,5 +1,5 @@
 import { useState } from "react"
-import api from "../assets/api"
+import { api } from "../assets/api"
 import ApiStatus from "../assets/ApiStatus"
 
 export default function AddFormPanel({ registerRelevantClient }) {
@@ -16,7 +16,7 @@ export default function AddFormPanel({ registerRelevantClient }) {
         api.addClient(name, about)
         .then((response) => {
             let client = {
-                id: response.id,
+                id: response,
                 name: name,
                 about: about
 
