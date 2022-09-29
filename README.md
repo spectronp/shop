@@ -14,11 +14,26 @@ Simple shop system for small resellers
 # How to install
 
 ```bash
+# Clone repo
 git clone https://github.com/spectronp/shop.git
 cd shop
+
+# Install dependencies
 composer install
 npm install
-npm run dev
+
+# Set Laravel key
+cp .env.testing .env
+php artisan key:generate
+
+# Set database
+touch database/database.sqlite
+php artisan migrate
+
+# Compile JS
+npm run dev # for development
+# or
+npm run prod # for production
 ```
 
 # Running Tests
