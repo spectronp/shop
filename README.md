@@ -23,7 +23,7 @@ composer install
 npm install
 
 # Set Laravel key
-cp .env.testing .env
+cp .env.dev .env
 php artisan key:generate
 
 # Set database
