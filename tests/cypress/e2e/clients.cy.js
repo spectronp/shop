@@ -128,7 +128,7 @@ describe('Clients Page', () => {
 
     it('Clients Search', () => {
         cy.refreshDatabase()
-        cy.seed('ClientsSeeder')
+        cy.seed('ClientSeeder')
 
         const client = 'Claudia' // TODO -- Get one client that the Seeder inserted in the db
 
