@@ -64,6 +64,11 @@ class Api{
         let delay = 200
         return this.apiCall(this.instance.put, `/clients/${id}/history`, { history: history}, delay)
     }
+
+    async searchClient(term){
+        let delay = 200
+        return await this.apiCall(this.instance.get, `/clients/search?term=${term}`, null , delay)
+    }
 }
 
 export default Api
