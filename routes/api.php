@@ -19,6 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/clients/search', [ClientsController::class, 'search']);
 Route::get('/clients/{client}/history', [ClientsController::class, 'getHistory']);
 Route::put('/clients/{client}/history', [ClientsController::class, 'updateHistory']);
 Route::apiResource('clients', ClientsController::class);
