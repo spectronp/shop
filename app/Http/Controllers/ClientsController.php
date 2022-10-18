@@ -60,6 +60,20 @@ class ClientsController extends Controller
     }
 
     /**
+     *
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function search(Request $request)
+    {
+        $term = $request->input('term');
+        $result = Client::search( $term )->take(10)->get();
+
+        return response( $result );
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  \App\Models\Client  $client
