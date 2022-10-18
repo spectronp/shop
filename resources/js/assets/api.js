@@ -18,7 +18,7 @@ class Api{
     }
 
     async apiCall(method, url, params, delay = 0){
-        if(this.lastCallReject) this.lastCallReject('newCall')
+        if(this.lastCallReject) this.lastCallReject({ cancelled: true })
 
         let final_response
         let apiCall
@@ -34,7 +34,9 @@ class Api{
                    if( response != undefined ) final_response = response.data
                 })
             },
-            () => {}
+            rej_res => {
+                if(rej_res.cancelled) final_response = rej_res
+            }
         )
 
         await apiCall
