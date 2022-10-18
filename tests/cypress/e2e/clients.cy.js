@@ -130,7 +130,7 @@ describe('Clients Page', () => {
         cy.refreshDatabase()
         cy.seed('ClientSeeder')
 
-        const client = 'Claudia' // TODO -- Get one client that the Seeder inserted in the db
+        const client = 'Test Client'
 
         cy.visit('/')
 
