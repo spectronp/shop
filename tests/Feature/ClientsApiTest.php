@@ -62,6 +62,22 @@ class ClientsApiTest extends TestCase
         ]);
     }
 
+    public function test_can_search(): void
+    {
+        $client = Client::create([
+            'name' => fake()->unique()->firstName()
+        ]);
+
+        $response = $this->getJson('/api/clients/search', ['term' => $client->name]);
+
+        $response->assertStatus(200)->assertJson( fn (AssertableJson $json) =>
+            $json->first(fn ($json) =>
+                $json->where('name', $client->name)
+                    ->etc()
+            )
+        );
+    }
+
     public function test_can_get_history(): void
     {
         $history = 'history string';

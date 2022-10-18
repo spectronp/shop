@@ -39,6 +39,77 @@ test('call on addClient', async () => {
     return promise.then( res => { expect(res).toBe(client_id) })
 })
 
+test('call on searchClient', async () => {
+    jest.useFakeTimers()
+    let client_list = Array(10).fill().map((_, i) => ({
+        id: i,
+        name: faker.name.fullName(),
+        about: faker.random.words()
+    }))
+    let client = client_list.at(1)
+    axiosMock.get.mockResolvedValue({ data: client_list })
+    const api = new Api()
+
+    let promise = api.searchClient(client.name)
+
+    jest.runAllTimers()
+    await promise
+
+    expect.assertions(4)
+    expect(promise).toBeInstanceOf(Promise)
+    expect(axiosMock.get).toHaveBeenCalledTimes(1)
+    expect(axiosMock.get).toHaveBeenCalledWith(`/clients/search?term=${client.name}`, null)
+
+    jest.useRealTimers()
+
+    return promise.then(res => { expect(res).toBe(client_list) })
+})
+
+test('2 call on searchClient', async () => {
+    jest.useFakeTimers()
+    let terms = faker.random.words(2).split(' ')
+    const api = new Api()
+
+    let promise1 = api.searchClient(terms[0])
+    let promise2 = api.searchClient(terms[1])
+
+    jest.runAllTimers()
+
+    await promise1
+    await promise2
+
+    expect.assertions(3)
+    expect(axiosMock.get).toHaveBeenCalledTimes(1)
+    expect(axiosMock.get).toHaveBeenCalledWith(`/clients/search?term=${terms[1]}`, null)
+
+    jest.useRealTimers()
+
+    return promise1.then(res => { expect(res).toEqual({ cancelled: true }) })
+})
+
+test('2 calls with delay on searchClient', async () => {
+    jest.useFakeTimers()
+    let terms = faker.random.words(2).split()
+    let type_delay = 200
+    const api = new Api()
+
+    let promise1 = api.searchClient(terms[0])
+
+    jest.advanceTimersByTime(type_delay)
+
+    let promise2 = api.searchClient(terms[1])
+
+    jest.runAllTimers()
+    await promise1
+    await promise2
+
+    expect(axiosMock.get).toHaveBeenCalledTimes(2)
+    expect(axiosMock.get).toHaveBeenNthCalledWith( 1,`/clients/search?term=${terms[0]}`, null )
+    expect(axiosMock.get).toHaveBeenNthCalledWith( 2, `/clients/search?term=${terms[1]}`, null )
+
+    jest.useRealTimers()
+})
+
 test('call on updateClient', async () => {
     let client = {
         name: faker.name.fullName(),

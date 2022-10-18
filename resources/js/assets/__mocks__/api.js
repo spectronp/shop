@@ -5,6 +5,7 @@ export const api = {
     deleteClient: jest.fn(() => Promise.resolve()),
     getHistory: jest.fn(() => Promise.resolve('')),
     updateHistory: jest.fn(() => Promise.resolve()),
+    searchClient: jest.fn(() => Promise.resolve([]))
 };
 
 const Api = jest.fn(() => api);

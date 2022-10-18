@@ -2,11 +2,8 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 use App\Models\Client;
-
-use function PHPUnit\Framework\assertFalse;
-use function PHPUnit\Framework\assertFileEqualsCanonicalizing;
 
 class ClientModelTest extends TestCase
 {

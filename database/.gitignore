@@ -1,1 +1,4 @@
 *.sqlite*
+
+# Meilisearch Files
+/data.ms

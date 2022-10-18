@@ -128,22 +128,22 @@ describe('Clients Page', () => {
 
     it('Clients Search', () => {
         cy.refreshDatabase()
-        cy.seed('ClientsSeeder')
+        cy.seed('ClientSeeder')
 
-        const client = 'Claudia' // TODO -- Get one client that the Seeder inserted in the db
+        const client = 'Test Client'
 
         cy.visit('/')
 
         cy.findByLabelText('Buscar').as('search').type(client)
         cy.get('#search-load').should('be.visible')
         cy.get('#results').within(() => { // NOTE - Maybe the #results and #results-list could be the same
-        cy.get('ol#results-list').as('list').should('have.length', 10) // NOTE -- This length will be configurable in the future
-        cy.get('@list').eq(0).get('.client-card').contains(client)
+            cy.get('ol').as('list').should('have.length', 1) // NOTE -- This length will be configurable in the future
+            cy.get('@list').eq(0).get('.client-card').contains(client)
         })
-        cy.get('#search-load').should('not.be.visible')
+        cy.get('#search-load').should('not.exist')
 
         cy.get('@search').clear()
-        cy.get('#search-load').should('be.visible')
-        cy.get('#results').should('not.be.visible')
+        cy.get('#search-load').should('not.exist')
+        cy.get('#results').should('not.exist')
     })
 })

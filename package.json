@@ -2,9 +2,9 @@
     "private": true,
     "scripts": {
         "test": "jest",
-        "serve": "export APP_ENV=testing; php artisan serve",
-        "cypr:open": "export APP_ENV=testing; php artisan serve & cypress open",
-        "cypr:run": "export APP_ENV=testing; php artisan serve & cypress run",
+        "serve": "php artisan serve",
+        "cypr:open": "php artisan serve & cypress open",
+        "cypr:run": "php artisan serve & cypress run",
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",
