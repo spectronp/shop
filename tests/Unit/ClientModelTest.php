@@ -5,9 +5,6 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use App\Models\Client;
 
-use function PHPUnit\Framework\assertFalse;
-use function PHPUnit\Framework\assertFileEqualsCanonicalizing;
-
 class ClientModelTest extends TestCase
 {
     public function test_returns_true_when_equal(): void
