@@ -9,8 +9,5 @@ export default function Search({ setSearchInput }) {
         setSearchInput(e.target.value)
     }
 
-    return <div>
-        <label htmlFor="search">Buscar</label>
-        <input type="text" id="search" value={search}  onChange={handleChange} />
-    </div>
+    return <input type="text" id="search" placeholder="Buscar" className="w-2/3 bg-gray-800 rounded-full border h-10 px-4 mb-4" value={search}  onChange={handleChange} />
 }

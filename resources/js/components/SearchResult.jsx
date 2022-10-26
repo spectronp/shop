@@ -37,7 +37,7 @@ switch(status.apiStatus){
     case ApiStatus.SUCCESS:
         if( result.length == 0 ) return <p>Nenhum cliente achado</p>
 
-        return <div id='results'><ClientList clients={result} /></div>
+        return <div id='results' className='w-11/12'><ClientList clients={result} /></div>
     case ApiStatus.ERROR:
         return <p>Erro: {status.error.message}</p>
 }
