@@ -16,12 +16,13 @@ afterEach(() => {
     setMocks()
 })
 
-test('display client data', () => {
-    let client = {
-        name: 'John',
-        about: 'Doe'
-    }
+const client = {
+    id: 42,
+    name: 'John',
+    about: 'Doe'
+}
 
+test('display client data', () => {
     render(<ClientCard client={client} />)
 
     expect(screen.queryByText(client.name)).toBeInTheDocument()
@@ -29,7 +30,7 @@ test('display client data', () => {
 })
 
 test('not expanded on first render', () => {
-    render(<ClientCard client={{}} />)
+    render(<ClientCard client={client} />)
 
     expect(screen.queryByText('Carregando...')).not.toBeInTheDocument()
     expect(screen.queryByRole('textarea')).not.toBeInTheDocument()
@@ -37,23 +38,23 @@ test('not expanded on first render', () => {
 
 test('change expansion when user click expand button', async () => {
     const user = userEvent.setup()
-    render(<ClientCard client={{}} />)
+    render(<ClientCard client={client} />)
 
-    await user.click(screen.queryByTitle('expand'))
+    await user.click(screen.queryByText(client.name))
 
     expect(screen.queryByTitle('history')).toBeInTheDocument()
 })
 test('dont call getHistory before expansion', () => {
-    render(<ClientCard client={{}} />)
+    render(<ClientCard client={client} />)
 
     expect(api.getHistory).not.toHaveBeenCalled()
 })
 
 test('call getHistory', async () => {
     const user = userEvent.setup()
-    render(<ClientCard client={{ id: 42 }} />)
+    render(<ClientCard client={client} />)
 
-    await user.click(screen.queryByTitle('expand'))
+    await user.click(screen.queryByText(client.name))
 
     expect(api.getHistory).toHaveBeenCalledWith( 42 )
 })
@@ -61,9 +62,9 @@ test('call getHistory', async () => {
 test('loading feedback', async () => {
     api.getHistory.mockReturnValueOnce( new Promise(() => {}) ) // NOTE -- return client id ???
     const user = userEvent.setup()
-    render(<ClientCard client={{}} />)
+    render(<ClientCard client={client} />)
 
-    await user.click(screen.queryByTitle('expand'))
+    await user.click(screen.queryByText(client.name))
 
     expect(screen.queryByText('Carregando...')).toBeInTheDocument()
 })
@@ -73,9 +74,9 @@ test('display saved history', async () => {
     let history = 'history line'
     const user = userEvent.setup()
     api.getHistory.mockResolvedValueOnce( history )
-    render(<ClientCard client={{}} />)
+    render(<ClientCard client={client} />)
 
-    await user.click(screen.queryByTitle('expand'))
+    await user.click(screen.queryByText(client.name))
 
     expect(screen.queryByText(history)).toBeInTheDocument()
 })
@@ -86,9 +87,9 @@ test('call updateHistory', async () => {
     const user = userEvent.setup({
         advanceTimers: () => jest.runOnlyPendingTimers(), // TODO -- search why i cant use "delay: null here"
     })
-    render(<ClientCard client={{ id: 42 }} />)
+    render(<ClientCard client={client} />)
 
-    await user.click(screen.queryByTitle('expand'))
+    await user.click(screen.queryByText(client.name))
 
     let history_element = await screen.findByTitle('history')
     await user.type(history_element, history)
@@ -104,9 +105,9 @@ test('call updateHistory', async () => {
 test('saving feedback', async () => {
     api.updateHistory.mockReturnValue( new Promise(() => {}) )
     const user = userEvent.setup()
-    render(<ClientCard client={{}} />)
+    render(<ClientCard client={client} />)
 
-    await user.click(screen.queryByTitle('expand'))
+    await user.click(screen.queryByText(client.name))
     await user.type(screen.queryByTitle('history'), 'history line')
 
     expect(screen.queryByText('Salvando...')).toBeInTheDocument()
@@ -114,9 +115,9 @@ test('saving feedback', async () => {
 
 test('saved feedback', async () => {
     const user = userEvent.setup()
-    render(<ClientCard client={{}} />)
+    render(<ClientCard client={client} />)
 
-    await user.click(screen.queryByTitle('expand'))
+    await user.click(screen.queryByText(client.name))
     let history_element = await screen.findByTitle('history')
     await user.type(history_element, 'history line')
 
@@ -132,9 +133,9 @@ test('error feedback when loading history', async () => {
 
     api.getHistory.mockRejectedValueOnce(error_response)
     const user = userEvent.setup()
-    render(<ClientCard client={{}} />)
+    render(<ClientCard client={client} />)
 
-    await user.click(screen.queryByTitle('expand'))
+    await user.click(screen.queryByText(client.name))
 
     expect(screen.queryByText(error_response.message)).toBeInTheDocument()
 })
@@ -149,9 +150,9 @@ test('error feedback when updating history', async () => {
     const user = userEvent.setup({
         advanceTimers: () => jest.runOnlyPendingTimers()
     })
-    render(<ClientCard client={{}} />)
+    render(<ClientCard client={client} />)
 
-    await user.click(screen.queryByTitle('expand'))
+    await user.click(screen.queryByText(client.name))
 
     let history_element = await screen.findByTitle('history')
     await user.type(history_element, 'history line')
