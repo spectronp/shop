@@ -1,5 +1,6 @@
 jsconfig.json
-/public/js/app.js
+/public/js
+/public/css
 
 # Laravel Defaults
 /node_modules

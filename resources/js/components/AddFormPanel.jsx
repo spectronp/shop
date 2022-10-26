@@ -63,16 +63,14 @@ export default function AddFormPanel({ registerRelevantClient }) {
 
     return (
         <>
-        <form onSubmit={ handleSubmit } >
-            <input type="text" name="" id="name" value={name} onChange={handleChange} />
-            <label htmlFor="name">Nome</label>
+        <form className="w-2/3 inline-block mb-5" onSubmit={ handleSubmit } >
+            <input type="text" name="" id="name" placeholder="Nome" className="rounded-full border bg-gray-800 px-2 mb-2" value={name} onChange={handleChange} />
 
-            <input type="text" name="" id="about" value={about} onChange={handleChange} />
-            <label htmlFor="about">Sobre</label>
+            <input type="text" name="" id="about" placeholder="Sobre" className="rounded-full border bg-gray-800 px-2 mb-2" value={about} onChange={handleChange} />
 
-            <button type="submit" id="register">Cadastrar</button>
+            <button type="submit" id="register" className="bg-blue-900 rounded-md px-2">Cadastrar</button>
+            { feedback() }
         </form>
-        { feedback() }
         </>
     )
 }

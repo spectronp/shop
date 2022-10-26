@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { api } from "../assets/api"
 import ApiStatus from "../assets/ApiStatus"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPen } from '@fortawesome/free-solid-svg-icons'
 
 export default function ClientCard({ client, setEditModal }){
     const [expanded, setExpansion] = useState(false)
@@ -107,23 +109,26 @@ export default function ClientCard({ client, setEditModal }){
     }
 
     return (
-        <div className="client-card">
-        <button title="expand" className="expand-toggle" onClick={() => setExpansion( ! expanded )}></button>
-        <p>{client.name}</p>
-        <p>{client.about}</p>
-        {
-            expanded ?
-                <>
-                <button className="edit-button" onClick={ () => setEditModal({ isOpen: true, client: client }) } ></button>
-                <p>{feedback()}</p>
-                {
-                    isLoading()
-                        ? null
-                        : <textarea title="history" className="client-history" value={history} onChange={handleChange} ></textarea>
-                }
-                </>
-            : null
-        }
+        <div className="client-card grid grid-cols-2 gap-y-2 rounded-xl border p-2">
+            <div className="block"  onClick={() => setExpansion( ! expanded )}>
+                <p className="text-xl">{client.name}</p>
+                <p>{client.about}</p>
+            </div>
+            {
+                expanded ?
+                    <>
+                    <button className="edit-button justify-self-end mr-2" onClick={ () => setEditModal({ isOpen: true, client: client }) } >
+                        <FontAwesomeIcon icon={faPen} />
+                    </button>
+                    <p>{feedback()}</p>
+                    {
+                        isLoading()
+                            ? null
+                            : <textarea title="history" className="client-history col-span-full bg-gray-800 rounded-sm border" value={history} onChange={handleChange} ></textarea>
+                    }
+                    </>
+                : null
+            }
         </div>
     )
 }

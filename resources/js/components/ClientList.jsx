@@ -2,7 +2,6 @@ import ClientCard from './ClientCard'
 
 export default function ClientList({ clients, setEditModal }){
     return (
-        <div>
         <ol>
         {
             clients.map(client => (
@@ -10,6 +9,5 @@ export default function ClientList({ clients, setEditModal }){
             ))
         }
         </ol>
-        </div>
     )
 }

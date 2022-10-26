@@ -20,7 +20,7 @@ test('no feedback by dafault', () => {
     render(<AddFormPanel registerRelevantClient={emptyFunction} />)
 
     feedbackMessages.forEach( message => {
-        expect(screen.queryByText(message)).not.toBeInTheDocument()
+        expect(screen.queryByPlaceholderText(message)).not.toBeInTheDocument()
     })
 })
 
@@ -58,8 +58,8 @@ test('call registerRelevantClient on success', async () => {
     const user = userEvent.setup()
     render(<AddFormPanel registerRelevantClient={registerRelevantClientMock} />)
 
-    await user.type(screen.queryByText(nameFieldText), client.name)
-    await user.type(screen.queryByText(aboutFieldText), client.about)
+    await user.type(screen.queryByPlaceholderText(nameFieldText), client.name)
+    await user.type(screen.queryByPlaceholderText(aboutFieldText), client.about)
     await user.click(screen.queryByText(submitButtonText))
 
     client.id = expect.any(Number)
@@ -84,7 +84,7 @@ test('wipe feedback when user type again', async () => {
     render(<AddFormPanel registerRelevantClient={emptyFunction} />)
 
     await user.click(screen.queryByText(submitButtonText))
-    await user.type(screen.queryByText(nameFieldText), 'aaa')
+    await user.type(screen.queryByPlaceholderText(nameFieldText), 'aaa')
 
     expect(screen.queryByText(successFeedback)).not.toBeInTheDocument()
 })

@@ -11,24 +11,24 @@ export default function ClientsPage(){
     const [editModal, setEditModal] = useState({ isOpen: false })
 
     return (
-        <>
-        <Search setSearchInput={setSearchInput} />
-        {
-            editModal.isOpen
-                ? <ClientEditModal
-                    client={editModal.client}
-                    setEditModal={setEditModal}
-                    registerRelevantClient={registerRelevantClient}
-                />
-                : null
-        }
-        <MiddleSector registerRelevantClient={registerRelevantClient} />
-        <CardDisplay
-            searchInput={searchInput}
-            relevantClients={relevantClients}
-            registerRelevantClient={registerRelevantClient}
-            setEditModal={setEditModal}
-        />
-        </>
+        <div className="h-screen bg-gray-900 text-white flex flex-col justify-center items-center">
+            <Search setSearchInput={setSearchInput} />
+            {
+                editModal.isOpen
+                    ? <ClientEditModal
+                        client={editModal.client}
+                        setEditModal={setEditModal}
+                        registerRelevantClient={registerRelevantClient}
+                    />
+                    : null
+            }
+            <MiddleSector registerRelevantClient={registerRelevantClient} />
+            <CardDisplay
+                searchInput={searchInput}
+                relevantClients={relevantClients}
+                registerRelevantClient={registerRelevantClient}
+                setEditModal={setEditModal}
+            />
+        </div>
     )
 }
