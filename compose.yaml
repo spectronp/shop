@@ -1,0 +1,17 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - "80:80"
+  php-fpm:
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+  meilisearch:
+    image: getmeili/meilisearch
+    environment:
+      - MEILI_ENV=production
+      - MEILI_MASTER_KEY=
+      - MEILI_NO_ANALYTICS
