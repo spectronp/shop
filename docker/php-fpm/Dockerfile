@@ -17,11 +17,10 @@ RUN rm -rf babel.config.js \
 FROM php:fpm-alpine
 COPY --from=composer --chown=www-data:www-data /tmp/shop /srv/shop
 WORKDIR /srv/shop
-RUN touch database/database.sqlite
+RUN sh -c "if [[ ! -e database/database.sqlite ]]; then touch database.sqlite; fi"
 RUN chown www-data:www-data database/database.sqlite
 RUN php artisan key:generate
-RUN php artisan migrate
-RUN php artisan scout:index clients
+RUN php artisan migrate --force
 RUN php artisan scout:import "App\Models\Client"
 RUN php artisan config:cache; \
     php artisan route:cache; \
