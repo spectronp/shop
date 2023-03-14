@@ -2,7 +2,7 @@
     "private": true,
     "scripts": {
         "test": "jest",
-        "serve": "php artisan serve",
+        "serve": "php artisan serve -q",
         "cypr:open": "start-test serve http://127.0.0.1:8000 './node_modules/.bin/cypress open'",
         "cypr:run": "start-test serve http://127.0.0.1:8000 './node_modules/.bin/cypress run'",
         "dev": "npm run development",

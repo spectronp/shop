@@ -2,6 +2,9 @@ jsconfig.json
 /public/js
 /public/css
 
+/tests/cypress/videos
+/tests/cypress/screenshots
+
 # Laravel Defaults
 /node_modules
 /public/hot

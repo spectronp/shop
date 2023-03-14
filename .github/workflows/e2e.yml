@@ -1,0 +1,41 @@
+name: End-to-End Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  e2e:
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install cURL
+        run: sudo apt-get install -y curl
+      - name: Install Cypress dependencies
+        run: sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      - uses: shivammathur/setup-php@verbose
+        with:
+          php-version: '8.1'
+          extensions: sodium, sqlite3, pdo_sqlite, xdebug
+      - uses: actions/checkout@v3
+      - name: Install Node.js dependencies
+        run: npm ci
+      - name: Build Front-end App
+        run: npm run prod
+      - name: Install Composer dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Copy .env
+        run: cp .env.testing .env
+      - name: Generate Laravel Key
+        run: php artisan key:generate
+      - name: Create database
+        run: touch database/database.sqlite; php artisan migrate
+      - name: Run Cypress End-to-End Tests
+        uses: cypress-io/github-action@v5
+        with:
+          build: npm run prod
+          start: php artisan serve -q
+          wait-on: 'http://localhost:8000'
+          config: reporter=dot

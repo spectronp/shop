@@ -1,6 +1,7 @@
 const { defineConfig } = require('cypress')
 
 module.exports = defineConfig({
+    reporter: "progress",
     chromeWebSecurity: false,
     retries: 2,
     defaultCommandTimeout: 5000,
@@ -8,8 +9,6 @@ module.exports = defineConfig({
     videosFolder: 'tests/cypress/videos',
     screenshotsFolder: 'tests/cypress/screenshots',
     fixturesFolder: 'tests/cypress/fixture',
-    video: false,
-    screenshotOnRunFailure: false,
     e2e: {
         setupNodeEvents(on, config) {
             return require('./tests/cypress/plugins/index.js')(on, config)
