@@ -9,6 +9,9 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    ignore:
+      dependency-name: "*"
+      update-types: ["version-update:semver-major"]
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
@@ -18,3 +21,6 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    ignore:
+      dependency-name: "*"
+      update-types: ["version-update:semver-major"]
